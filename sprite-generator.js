@@ -1,15 +1,32 @@
+const svgsDirCommand = {
+  command:'--svgsDir',
+  desc:'The directory of the SVGs to convert'
+}
+const spriteDirCommand = {
+  command: '--spriteDir',
+  desc: 'The destination directory of created sprite'
+}
 const path = require('path');
 const glob = require('glob');
 const SVGSpriter = require('svg-sprite');  //npm install svg-sprite
 const { readFile, writeFile, mkdir } = require('fs');
 const { promisify } = require('util');
+const yargs = require('yargs/yargs')
+const { hideBin } = require('yargs/helpers')
+const argv = yargs(hideBin(process.argv))
+  .command(svgsDirCommand)
+  .command(spriteDirCommand)
+  .help()
+  .wrap(null)
+  .argv
+
 
 const promisifiedReadFile = promisify(readFile);
 const promisifiedWriteFile = promisify(writeFile);
 const promisifiedMkdir = promisify(mkdir);
 
-const svgsDir = path.join(__dirname, './src/assets/svg'); // Path of svg directory
-const spriteDir = path.join(__dirname, './src/assets'); // Path of sprite directory
+const svgsDir = path.join(__dirname, argv.svgsDir ? argv.svgsDir : './src/assets/svg'); // Path of svg directory
+const spriteDir = path.join(__dirname, argv.spriteDir ? argv.spriteDir :  './src/assets'); // Path of sprite directory
 
 async function spriterCompileAsync(spriterInstance, config) {
   return new Promise((resolve, reject) => {
