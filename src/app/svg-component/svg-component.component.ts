@@ -13,7 +13,7 @@ export class SvgComponentComponent {
   @Input()
   iconReference: string;
 
-  iconHref = 'assets/sprites/sprite.svg#';
+  iconHref = 'assets/sprite.svg#';
 
   constructor() { }
 
